@@ -5,7 +5,7 @@ description = "Manim plugin for all things voiceover"
 authors = [
     { name = "The Manim Community Developers", email = "contact@manim.community" },
 ]
-requires-python = ">=3.8,<4"
+requires-python = ">=3.12"
 readme = "README.md"
 license = "MIT"
 keywords = [
@@ -50,17 +50,17 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-azure = ["azure-cognitiveservices-speech>=1.24.0,<2"]
-gtts = ["gTTS>=2.2.4,<3"]
-openai = ["openai>=1.6.1,<2"]
-pyttsx3 = ["pyttsx3>=2.90,<3"]
+azure = ["azure-cognitiveservices-speech>=1.50.0"]
+gtts = ["gTTS>=2.5.4"]
+openai = ["openai>=2.38.0"]
+pyttsx3 = ["pyttsx3>=2.99"]
 coqui = []
-recorder = ["PyAudio>=0.2.12,<0.3", "pynput>=1.7.6,<2"]
-translate = ["deepl>=1.12.0,<2"]
-elevenlabs = ["elevenlabs>=0.2.27,<0.3"]
-transcribe = ["openai-whisper>=20230314,<20230315", "stable-ts>=2.6.2,<3"]
+recorder = ["PyAudio>=0.2.14", "pynput>=1.8.2"]
+translate = ["deepl>=1.30.0"]
+elevenlabs = ["elevenlabs>=2.50.0"]
+transcribe = ["openai-whisper>=20250625", "stable-ts>=2.19.1"]
 all = [
-    "azure-cognitiveservices-speech>=1.50.0,<2",
+    "azure-cognitiveservices-speech>=1.50.0",
     "gTTS>=2.5.4",
     "pyttsx3>=2.99",
     "PyAudio>=0.2.14",
@@ -87,14 +87,14 @@ manim_voiceover = "manim_voiceover"
 [dependency-groups]
 dev = [
     "Pygments>=2.20.0",
-    "pytest-cov>=7.1.04",
+    "pytest-cov>=7.1.0",
     "pytest>=9.0.3",
     "pylint>=4.0.5",
     "Sphinx>=9.1.0",
     "sphinx-copybutton>=0.5.2",
     "sphinxext-opengraph>=0.13.0",
     "furo>=2025.12.19",
-    "recommonmark>=0.7.1.8",
+    "recommonmark>=0.7.1",
     "matplotlib>=3.10.9",
     "pre-commit>=4.6.0",
     "gitpython>=3.1.50",
