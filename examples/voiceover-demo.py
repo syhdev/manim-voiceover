@@ -1,7 +1,7 @@
-from manim import *
 import pygments.styles as code_styles
-from manim_voiceover import VoiceoverScene
+from manim import *
 
+from manim_voiceover import VoiceoverScene
 from manim_voiceover.services.azure import AzureService
 
 code_style = code_styles.get_style_by_name("one-dark")
@@ -39,7 +39,7 @@ class VoiceoverDemo(VoiceoverScene):
         process of recording and manually syncing
         audio to your video."""
 )
-self.play(Write(demo_code), run_time=tracker.duration)''',
+        self.play(Write(demo_code), run_time=tracker.duration)''',
             insert_line_no=False,
             style=code_style,
             background="window",

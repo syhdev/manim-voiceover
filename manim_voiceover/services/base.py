@@ -1,12 +1,12 @@
-from abc import ABC, abstractmethod
-import typing as t
-import os
-import json
-import sys
 import hashlib
+import json
+import os
+from abc import ABC, abstractmethod
 from pathlib import Path
+
 from manim import config, logger
 from slugify import slugify
+
 from manim_voiceover.defaults import (
     DEFAULT_VOICEOVER_CACHE_DIR,
     DEFAULT_VOICEOVER_CACHE_JSON_FILENAME,
@@ -50,8 +50,8 @@ class SpeechService(ABC):
     def __init__(
         self,
         global_speed: float = 1.00,
-        cache_dir: t.Optional[str] = None,
-        transcription_model: t.Optional[str] = None,
+        cache_dir: str | None = None,
+        transcription_model: str | None = None,
         transcription_kwargs: dict = {},
         **kwargs,
     ):
@@ -139,8 +139,8 @@ class SpeechService(ABC):
         if model != self.transcription_model:
             if model is not None:
                 try:
-                    import whisper as __tmp
                     import stable_whisper as whisper
+                    import whisper as __tmp
                 except ImportError:
                     logger.error(
                         'Missing packages. Run `pip install "manim-voiceover[transcribe]"` to be able to transcribe voiceovers.'
@@ -186,7 +186,7 @@ class SpeechService(ABC):
     def get_cached_result(self, input_data, cache_dir):
         json_path = os.path.join(cache_dir / DEFAULT_VOICEOVER_CACHE_JSON_FILENAME)
         if os.path.exists(json_path):
-            json_data = json.load(open(json_path, "r"))
+            json_data = json.load(open(json_path))
             for entry in json_data:
                 if entry["input_data"] == input_data:
                     return entry
