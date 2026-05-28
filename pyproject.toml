@@ -58,6 +58,7 @@ coqui = []
 recorder = ["PyAudio>=0.2.14", "pynput>=1.8.2"]
 translate = ["deepl>=1.30.0"]
 elevenlabs = ["elevenlabs>=2.50.0"]
+mistralai = ["mistralai>=2.4.7"]
 transcribe = ["openai-whisper>=20250625", "stable-ts>=2.19.1"]
 all = [
     "azure-cognitiveservices-speech>=1.50.0",
@@ -70,6 +71,7 @@ all = [
     "openai-whisper>=20250625",
     "stable-ts>=2.19.1",
     "elevenlabs>=2.50.0",
+    "mistralai>=2.4.7",
 ]
 
 [project.urls]
@@ -120,3 +122,76 @@ module-root = ""
 [build-system]
 requires = ["uv_build>=0.11.15,<0.12.0"]
 build-backend = "uv_build"
+
+
+[tool.ruff]
+
+# Version Python cible (pour les règles de modernisation)
+target-version = "py312"
+
+# Longueur de ligne (88 = défaut de Black)
+line-length = 88
+
+# Dossiers à ignorer
+exclude = [
+    ".bzr",
+    ".direnv",
+    ".eggs",
+    ".git",
+    ".git-rewrite",
+    ".hg",
+    ".ipynb_checkpoints",
+    ".mypy_cache",
+    ".nox",
+    ".pants.d",
+    ".pyenv",
+    ".pytest_cache",
+    ".pytype",
+    ".ruff_cache",
+    ".svn",
+    ".tox",
+    ".venv",
+    ".vscode",
+    "__pypackages__",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+    "node_modules",
+    "site-packages",
+    "venv",
+    "dist",
+    "docs",
+]
+
+[tool.ruff.lint]
+# Règles à activer
+select = [
+    "E",   # Erreurs de style pycodestyle
+    "F",   # Erreurs Pyflakes (variables non utilisées, etc.)
+    "I",   # Tri des imports (isort)
+    "B",   # Bugs potentiels (flake8-bugbear)
+    "UP",  # Modernisation syntaxe (pyupgrade)
+    "SIM", # Simplifications possibles
+]
+
+# Règles à ignorer
+ignore = [
+    "E501", # Ligne trop longue (géré par le formatter)
+]
+
+# Règles que --fix peut corriger automatiquement
+fixable = ["ALL"]
+
+[tool.ruff.format]
+# Style des guillemets (comme Black)
+quote-style = "double"
+
+# Indentation (comme Black)
+indent-style = "space"
+
+
+[tool.ruff.lint.isort]
+# Compatibilité avec le profil "black"
+combine-as-imports = true
+force-single-line = false
