@@ -1,7 +1,8 @@
 import os
-import sox
 import uuid
-from mutagen.mp3 import MP3
+
+import sox
+from pydub import AudioSegment
 
 
 def adjust_speed(input_path: str, output_path: str, tempo: float) -> None:
@@ -19,6 +20,8 @@ def adjust_speed(input_path: str, output_path: str, tempo: float) -> None:
 
 
 def get_duration(path: str) -> float:
-    audio = MP3(path)
-    return audio.info.length
-    # return sox.file_info.duration(path)
+    # audio = MP3(path)
+    # return audio.info.length
+    # # return sox.file_info.duration(path)
+    audio = AudioSegment.from_file(path)
+    return len(audio) / 1000.0  # pydub gives milliseconds
