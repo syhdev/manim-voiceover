@@ -1,12 +1,11 @@
+import base64
 import os
 import sys
-import base64
-
 from pathlib import Path
-
 
 from dotenv import find_dotenv, load_dotenv
 from manim import logger
+from mistralai.client import Mistral
 
 from manim_voiceover.helper import (
     create_dotenv_file,
@@ -14,11 +13,6 @@ from manim_voiceover.helper import (
     remove_bookmarks,
 )
 from manim_voiceover.services.base import SpeechService
-
-
-from mistralai.client import Mistral
-
-
 
 load_dotenv(find_dotenv(usecwd=True))
 
@@ -48,7 +42,7 @@ class MistralAIService(SpeechService):
         voice: str = "a1b08953-06dd-4848-b71c-3267dcfedad2",
         model: str = "voxtral-mini-tts-2603",
         transcription_model: str = None,
-        **kwargs
+        **kwargs,
     ):
         """
         Args:
@@ -62,7 +56,6 @@ class MistralAIService(SpeechService):
                 Defaults to None.
         """
 
-
         prompt_ask_missing_extras("mistralai", "mistralai", "MistralAIService")
         self.voice = voice
         self.model = model
@@ -74,12 +67,10 @@ class MistralAIService(SpeechService):
     ) -> dict:
         """"""
 
-
         if cache_dir is None:
             cache_dir = self.cache_dir
 
         input_text = remove_bookmarks(text)
-
 
         input_data = {
             "input_text": input_text,
@@ -90,14 +81,26 @@ class MistralAIService(SpeechService):
             },
         }
 
-
         cached_result = self.get_cached_result(input_data, cache_dir)
         if cached_result is not None:
-            print("Cache hit for text:", text, "with voice:", self.voice, "and model:", self.model)
+            print(
+                "Cache hit for text:",
+                text,
+                "with voice:",
+                self.voice,
+                "and model:",
+                self.model,
+            )
             return cached_result
 
-        print("Cache miss for text:", text, "with voice:", self.voice, "and model:", self.model)
-
+        print(
+            "Cache miss for text:",
+            text,
+            "with voice:",
+            self.voice,
+            "and model:",
+            self.model,
+        )
 
         if path is None:
             audio_path = self.get_audio_basename(input_data) + ".mp3"
@@ -105,12 +108,15 @@ class MistralAIService(SpeechService):
             audio_path = path
 
         if os.getenv("MISTRAL_API_KEY") is None:
-            create_dotenv_mistralai()
+            # create_dotenv_mistralai()
+            pass
 
         # Initialize Mistral client
         client = Mistral(api_key=os.getenv("MISTRAL_API_KEY"))
 
-        print(f"Generating speech for text: {input_text} with voice: {self.voice} and model: {self.model}")
+        print(
+            f"Generating speech for text: {input_text} with voice: {self.voice} and model: {self.model}"
+        )
 
         try:
             # Use the Mistral SDK to generate speech
@@ -124,8 +130,10 @@ class MistralAIService(SpeechService):
             # Save the audio file
             # with open(str(Path(cache_dir) / audio_path), "wb") as f:
             #     f.write(response)
-            print(audio_path)
-            Path(cache_dir).joinpath(audio_path).write_bytes(base64.b64decode(response.audio_data))
+            # print(audio_path)
+            Path(cache_dir).joinpath(audio_path).write_bytes(
+                base64.b64decode(response.audio_data)
+            )
             # tts.save(str(Path(cache_dir) / audio_path))
 
         except Exception as e:

@@ -52,6 +52,7 @@ dependencies = [
 [project.optional-dependencies]
 azure = ["azure-cognitiveservices-speech>=1.50.0"]
 gtts = ["gTTS>=2.5.4"]
+gcloudtts = ["google-cloud-texttospeech>=2.36.0"]
 openai = ["openai>=2.38.0"]
 pyttsx3 = ["pyttsx3>=2.99"]
 coqui = []
@@ -72,6 +73,7 @@ all = [
     "stable-ts>=2.19.1",
     "elevenlabs>=2.50.0",
     "mistralai>=2.4.7",
+    "google-cloud-texttospeech>=2.36.0",
 ]
 
 [project.urls]
