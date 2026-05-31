@@ -53,10 +53,10 @@ class GeminiTTSService(SpeechService):
         super().__init__(transcription_model=None, **kwargs)
 
     def generate_from_text(
-        self, text: str, cache_dir: str = None, path: str = None, **kwargs
+        self, text: str, cache_dir: str | None = None, path: str | None = None, **kwargs
     ) -> dict:
         if cache_dir is None:
-            cache_dir = self.cache_dir
+            cache_dir: str | Path = self.cache_dir
 
         clean_text = remove_bookmarks(text)
 
