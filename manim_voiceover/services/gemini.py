@@ -1,6 +1,5 @@
 import os
 import sys
-import wave
 from pathlib import Path
 
 from dotenv import find_dotenv, load_dotenv
@@ -104,11 +103,14 @@ class GeminiTTSService(SpeechService):
         full_path = Path(cache_dir) / audio_path
 
         # Save audio
-        with wave.open(str(full_path), "wb") as wf:
-            wf.setnchannels(1)
-            wf.setsampwidth(2)
-            wf.setframerate(44100)
-            wf.writeframes(audio_data)
+        # with wave.open(str(full_path), "wb") as wf:
+        #     wf.setnchannels(1)
+        #     wf.setsampwidth(2)
+        #     wf.setframerate(44100)
+        #     wf.writeframes(audio_data)
+
+        with open(str(full_path), "wb") as f:
+            f.write(audio_data)
 
         return {
             "input_text": text,
