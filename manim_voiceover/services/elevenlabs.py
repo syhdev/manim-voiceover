@@ -34,7 +34,7 @@ class ElevenLabsService(SpeechService):
 
     def __init__(
         self,
-        voice_id: str = "xoXTHDKwfYtI8KUkyOEt",
+        voice_id: str | None = None,
         model_id: str = "eleven_multilingual_v2",
         output_format="mp3_44100_128",
         **kwargs,

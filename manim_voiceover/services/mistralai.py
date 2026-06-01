@@ -39,14 +39,13 @@ class MistralAIService(SpeechService):
 
     def __init__(
         self,
-        voice: str = "a1b08953-06dd-4848-b71c-3267dcfedad2",
-        model: str = "voxtral-mini-tts-2603",
-        transcription_model: str = None,
+        voice_id: str | None = None,
+        model_id: str = "voxtral-mini-tts-2603",
         **kwargs,
     ):
         """
         Args:
-            voice (str, optional): The voice to use. See the
+            voice_id (str, optional): The voice to use. See the
                 `API page <https://docs.mistral.ai/studio-api/audio/text_to_speech>`__
                 for all the available options. Defaults to ``"default"``.
             model (str, optional): The TTS model to use.
@@ -57,18 +56,18 @@ class MistralAIService(SpeechService):
         """
 
         prompt_ask_missing_extras("mistralai", "mistralai", "MistralAIService")
-        self.voice = voice
-        self.model = model
+        self.voice_id = voice_id
+        self.model_id = model_id
 
-        SpeechService.__init__(self, transcription_model=transcription_model, **kwargs)
+        SpeechService.__init__(self, transcription_model=None, **kwargs)
 
     def generate_from_text(
-        self, text: str, cache_dir: str = None, path: str = None, **kwargs
+        self, text: str, cache_dir: str | None = None, path: str | None = None, **kwargs
     ) -> dict:
         """"""
 
         if cache_dir is None:
-            cache_dir = self.cache_dir
+            cache_dir: str | Path = self.cache_dir
 
         input_text = remove_bookmarks(text)
 
@@ -76,8 +75,8 @@ class MistralAIService(SpeechService):
             "input_text": input_text,
             "service": "mistralai",
             "config": {
-                "voice": self.voice,
-                "model": self.model,
+                "voice": self.voice_id,
+                "model": self.model_id,
             },
         }
 
@@ -87,9 +86,9 @@ class MistralAIService(SpeechService):
                 "Cache hit for text:",
                 text,
                 "with voice:",
-                self.voice,
+                self.voice_id,
                 "and model:",
-                self.model,
+                self.model_id,
             )
             return cached_result
 
@@ -97,9 +96,9 @@ class MistralAIService(SpeechService):
             "Cache miss for text:",
             text,
             "with voice:",
-            self.voice,
+            self.voice_id,
             "and model:",
-            self.model,
+            self.model_id,
         )
 
         if path is None:
@@ -115,15 +114,15 @@ class MistralAIService(SpeechService):
         client = Mistral(api_key=os.getenv("MISTRAL_API_KEY"))
 
         print(
-            f"Generating speech for text: {input_text} with voice: {self.voice} and model: {self.model}"
+            f"Generating speech for text: {input_text} with voice: {self.voice_id} and model: {self.model_id}"
         )
 
         try:
             # Use the Mistral SDK to generate speech
             response = client.audio.speech.complete(
-                model=self.model,
+                model=self.model_id,
                 input=input_text,
-                voice_id=self.voice,
+                voice_id=self.voice_id,
                 response_format="mp3",
             )
 
@@ -138,7 +137,7 @@ class MistralAIService(SpeechService):
 
         except Exception as e:
             logger.error(f"Mistral AI TTS SDK request failed: {e}")
-            raise Exception("Failed to generate speech using Mistral AI TTS SDK")
+            raise
 
         json_dict = {
             "input_text": text,

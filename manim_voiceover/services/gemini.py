@@ -36,12 +36,12 @@ class GeminiTTSService(SpeechService):
 
     def __init__(
         self,
-        model: str = "gemini-3.1-flash-tts-preview",
-        voice_name: str = "fr-FR-Chirp3-HD-Umbriel",
+        voice_id: str | None = None,
+        model_id: str = "gemini-3.1-flash-tts-preview",
         **kwargs,
     ):
-        self.model = model
-        self.voice_name = voice_name
+        self.model_id = model_id
+        self.voice_id = voice_id
 
         api_key = os.getenv("GOOGLE_API_KEY")
         if not api_key:
@@ -64,8 +64,8 @@ class GeminiTTSService(SpeechService):
             "input_text": clean_text,
             "service": "gemini",
             "config": {
-                "model": self.model,
-                "voice": self.voice_name,
+                "model": self.model_id,
+                "voice": self.voice_id,
             },
         }
 
@@ -81,7 +81,7 @@ class GeminiTTSService(SpeechService):
             # voice gender ("neutral")
             voice = texttospeech.VoiceSelectionParams(
                 language_code="fr-FR",
-                name=self.voice_name,
+                name=self.voice_id,
             )
 
             # Select the type of audio file you want returned
