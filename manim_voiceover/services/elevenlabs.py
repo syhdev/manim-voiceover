@@ -36,7 +36,7 @@ class ElevenLabsService(SpeechService):
         self,
         voice_id: str | None = None,
         model_id: str = "eleven_multilingual_v2",
-        output_format="wav_44100",
+        output_format="mp3_44100_192",
         **kwargs,
     ):
         """
