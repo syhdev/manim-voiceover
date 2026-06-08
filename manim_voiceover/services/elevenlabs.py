@@ -13,10 +13,10 @@ load_dotenv(find_dotenv(usecwd=True))
 
 
 def create_dotenv_elevenlabs():
-    logger.info(
-        "Check out https://voiceover.manim.community/en/stable/services.html#elevenlabs"
-        " to learn how to create an account and get your subscription key."
-    )
+    # logger.info(
+    #     "Check out https://voiceover.manim.community/en/stable/services.html#elevenlabs"
+    #     " to learn how to create an account and get your subscription key."
+    # )
     try:
         os.environ["ELEVENLABS_API_KEY"]
     except KeyError:
@@ -36,7 +36,7 @@ class ElevenLabsService(SpeechService):
         self,
         voice_id: str | None = None,
         model_id: str = "eleven_multilingual_v2",
-        output_format="mp3_44100_128",
+        output_format="wav_44100",
         **kwargs,
     ):
         """
