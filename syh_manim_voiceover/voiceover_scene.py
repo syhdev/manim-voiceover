@@ -1,13 +1,12 @@
 from collections.abc import Generator
 from contextlib import contextmanager
-from math import ceil
 from pathlib import Path
 
 from manim import Scene, config
 
-from manim_voiceover.helper import chunks, remove_bookmarks
-from manim_voiceover.services.base import SpeechService
-from manim_voiceover.tracker import VoiceoverTracker
+from syh_manim_voiceover.helper import remove_bookmarks
+from syh_manim_voiceover.services.base import SpeechService
+from syh_manim_voiceover.tracker import VoiceoverTracker
 
 # SCRIPT_FILE_PATH = "media/script.txt"
 
@@ -76,59 +75,60 @@ class VoiceoverScene(Scene):
         if self.create_subcaption:
             if subcaption is None:
                 subcaption = remove_bookmarks(text)
+            print("Subcaption not implemented yet.")
 
-            self.add_wrapped_subcaption(
-                subcaption,
-                tracker.duration,
-                subcaption_buff=subcaption_buff,
-                max_subcaption_len=max_subcaption_len,
-            )
+            # self.add_wrapped_subcaption(
+            #     subcaption,
+            #     tracker.duration,
+            #     subcaption_buff=subcaption_buff,
+            #     max_subcaption_len=max_subcaption_len,
+            # )
 
         return tracker
 
-    def add_wrapped_subcaption(
-        self,
-        subcaption: str,
-        duration: float,
-        subcaption_buff: float = 0.1,
-        max_subcaption_len: int = 70,
-    ) -> None:
-        """Adds a subcaption to the scene. If the subcaption is longer than `max_subcaption_len`, it is split into chunks that are smaller than `max_subcaption_len`.
+    # def add_wrapped_subcaption(
+    #     self,
+    #     subcaption: str,
+    #     duration: float,
+    #     subcaption_buff: float = 0.1,
+    #     max_subcaption_len: int = 70,
+    # ) -> None:
+    #     """Adds a subcaption to the scene. If the subcaption is longer than `max_subcaption_len`, it is split into chunks that are smaller than `max_subcaption_len`.
 
-        Args:
-            subcaption (str): The subcaption text.
-            duration (float): The duration of the subcaption in seconds.
-            max_subcaption_len (int, optional): Maximum number of characters for a subcaption. Subcaptions that are longer are split into chunks that are smaller than `max_subcaption_len`. Defaults to 70.
-            subcaption_buff (float, optional): The duration between split subcaption chunks in seconds. Defaults to 0.1.
-        """
-        subcaption = " ".join(subcaption.split())
-        n_chunk = ceil(len(subcaption) / max_subcaption_len)
-        tokens = subcaption.split(" ")
-        chunk_len = ceil(len(tokens) / n_chunk)
-        chunks_ = list(chunks(tokens, chunk_len))
-        try:
-            assert len(chunks_) == n_chunk or len(chunks_) == n_chunk - 1
-        except AssertionError:
-            import ipdb
+    #     Args:
+    #         subcaption (str): The subcaption text.
+    #         duration (float): The duration of the subcaption in seconds.
+    #         max_subcaption_len (int, optional): Maximum number of characters for a subcaption. Subcaptions that are longer are split into chunks that are smaller than `max_subcaption_len`. Defaults to 70.
+    #         subcaption_buff (float, optional): The duration between split subcaption chunks in seconds. Defaults to 0.1.
+    #     """
+    #     subcaption = " ".join(subcaption.split())
+    #     n_chunk = ceil(len(subcaption) / max_subcaption_len)
+    #     tokens = subcaption.split(" ")
+    #     chunk_len = ceil(len(tokens) / n_chunk)
+    #     chunks_ = list(chunks(tokens, chunk_len))
+    #     try:
+    #         assert len(chunks_) == n_chunk or len(chunks_) == n_chunk - 1
+    #     except AssertionError:
+    #         import ipdb
 
-            ipdb.set_trace()
+    #         ipdb.set_trace()
 
-        subcaptions = [" ".join(i) for i in chunks_]
-        subcaption_weights = [
-            len(subcaption) / len("".join(subcaptions)) for subcaption in subcaptions
-        ]
+    #     subcaptions = [" ".join(i) for i in chunks_]
+    #     subcaption_weights = [
+    #         len(subcaption) / len("".join(subcaptions)) for subcaption in subcaptions
+    #     ]
 
-        current_offset = 0
-        for idx, subcaption in enumerate(subcaptions):
-            chunk_duration = duration * subcaption_weights[idx]
-            self.add_subcaption(
-                subcaption,
-                duration=max(chunk_duration - subcaption_buff, 0),
-                offset=current_offset,
-            )
-            current_offset += chunk_duration
+    #     current_offset = 0
+    #     for idx, subcaption in enumerate(subcaptions):
+    #         chunk_duration = duration * subcaption_weights[idx]
+    #         self.add_subcaption(
+    #             subcaption,
+    #             duration=max(chunk_duration - subcaption_buff, 0),
+    #             offset=current_offset,
+    #         )
+    #         current_offset += chunk_duration
 
-    def add_voiceover_ssml(self, ssml: str, **kwargs) -> None:
+    def add_voiceover_ssml(self, ssml: str, **kwargs) -> VoiceoverTracker:
         raise NotImplementedError("SSML input not implemented yet.")
 
     # def save_to_script_file(self, text: str) -> None:
@@ -162,6 +162,8 @@ class VoiceoverScene(Scene):
         Args:
             mark (str): The `mark` attribute of the bookmark to wait for.
         """
+        if self.current_tracker is None:
+            return
         self.safe_wait(self.current_tracker.time_until_bookmark(mark))
 
     @contextmanager

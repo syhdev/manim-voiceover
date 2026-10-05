@@ -1,23 +1,19 @@
-import os
+import sched
 import time
 import wave
-import sys
-import sched
 from pathlib import Path
-from pydub import AudioSegment
-from manim import logger
 
-from manim_voiceover.helper import trim_silence, wav2mp3
-
-from pynput import keyboard
 import pyaudio
 from pydub import AudioSegment
 from pydub.playback import play
+from pynput import keyboard
+
+from syh_manim_voiceover.helper import trim_silence, wav2mp3
 
 
 class MyListener(keyboard.Listener):
     def __init__(self):
-        super(MyListener, self).__init__(self.on_press, self.on_release)
+        super().__init__(self.on_press, self.on_release)
         self.key_pressed = None
 
     def on_press(self, key):
@@ -92,7 +88,9 @@ class Recorder:
         self.listener = MyListener()
         self.listener.start()
 
-        print("Press and hold the 'r' (or Shift^R if on Wayland) key to begin recording")
+        print(
+            "Press and hold the 'r' (or Shift^R if on Wayland) key to begin recording"
+        )
         if self.first_call:
             print("Wait for 1 second, then start speaking.")
             print("Wait for at least 1 second after you finish speaking.")

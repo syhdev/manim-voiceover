@@ -1,6 +1,6 @@
 [project]
 name = "syh-manim-voiceover"
-version = "0.4.0"
+version = "0.4.1"
 description = "Manim plugin for all things voiceover, modified by SYH"
 authors = [
     { name = "The Manim Community Developers", email = "contact@manim.community" },
@@ -19,7 +19,6 @@ keywords = [
 ]
 classifiers = [
     "Development Status :: 3 - Alpha",
-    "License :: OSI Approved :: MIT License",
     "Topic :: Scientific/Engineering",
     "Topic :: Multimedia :: Video",
     "Topic :: Multimedia :: Graphics",
@@ -82,11 +81,11 @@ Repository = "https://github.com/ManimCommunity/manim-voiceover"
 Documentation = "https://voiceover.manim.community"
 
 [project.scripts]
-manim_translate = "manim_voiceover.translate.translate:main"
-manim_render_translation = "manim_voiceover.translate.render:main"
+manim_translate = "syh_manim_voiceover.translate.translate:main"
+manim_render_translation = "syh_manim_voiceover.translate.render:main"
 
 [project.entry-points."manim.plugins"]
-manim_voiceover = "manim_voiceover"
+syh_manim_voiceover = "syh_manim_voiceover"
 
 [dependency-groups]
 dev = [

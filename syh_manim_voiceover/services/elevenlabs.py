@@ -6,8 +6,8 @@ from dotenv import find_dotenv, load_dotenv
 from elevenlabs.client import ElevenLabs
 from manim import logger
 
-from manim_voiceover.helper import create_dotenv_file, remove_bookmarks
-from manim_voiceover.services.base import SpeechService
+from syh_manim_voiceover.helper import create_dotenv_file, remove_bookmarks
+from syh_manim_voiceover.services.base import SpeechService
 
 load_dotenv(find_dotenv(usecwd=True))
 

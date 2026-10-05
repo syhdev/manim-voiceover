@@ -7,12 +7,12 @@ from dotenv import find_dotenv, load_dotenv
 from manim import logger
 from mistralai.client import Mistral
 
-from manim_voiceover.helper import (
+from syh_manim_voiceover.helper import (
     create_dotenv_file,
     prompt_ask_missing_extras,
     remove_bookmarks,
 )
-from manim_voiceover.services.base import SpeechService
+from syh_manim_voiceover.services.base import SpeechService
 
 load_dotenv(find_dotenv(usecwd=True))
 

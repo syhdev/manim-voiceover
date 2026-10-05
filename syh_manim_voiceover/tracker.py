@@ -1,20 +1,18 @@
-from pathlib import Path
 import re
-import numpy as np
-from manim import logger
+from pathlib import Path
 
-from typing import Optional, List
+import numpy as np
+from manim import Scene, logger
 from scipy.interpolate import interp1d
 
-from manim import Scene
-from manim_voiceover.modify_audio import get_duration
-from manim_voiceover.helper import remove_bookmarks
+from syh_manim_voiceover.helper import remove_bookmarks
+from syh_manim_voiceover.modify_audio import get_duration
 
 AUDIO_OFFSET_RESOLUTION = 10_000_000
 
 
 class TimeInterpolator:
-    def __init__(self, word_boundaries: List[dict]):
+    def __init__(self, word_boundaries: list[dict]):
         self.x = []
         self.y = []
         for wb in word_boundaries:
@@ -116,7 +114,7 @@ class VoiceoverTracker:
         for mark, dist in self.bookmark_distances.items():
             # Normalize text offset
             elapsed = self.time_interpolator.interpolate(
-                dist * transcribed_text_len / net_text_len
+                int(dist * transcribed_text_len / net_text_len)
             )
             self.bookmark_times[mark] = self.start_t + elapsed
 
@@ -146,8 +144,8 @@ class VoiceoverTracker:
             )
 
     def time_until_bookmark(
-        self, mark: str, buff: int = 0, limit: Optional[int] = None
-    ) -> int:
+        self, mark: str, buff: float = 0, limit: float | None = None
+    ) -> float:
         """Returns the time until a bookmark.
 
         Args:
@@ -159,9 +157,11 @@ class VoiceoverTracker:
             int:
         """
         self._check_bookmarks()
-        if not mark in self.bookmark_times:
-            raise Exception("There is no <bookmark mark='%s' />" % mark)
-        result = max(self.bookmark_times[mark] - self.scene.renderer.time + buff, 0)
+        if mark not in self.bookmark_times:
+            raise Exception(f"There is no <bookmark mark={mark} /> in the voiceover.")
+        result = float(
+            max(self.bookmark_times[mark] - self.scene.renderer.time + buff, 0)
+        )
         if limit is not None:
             result = min(limit, result)
         return result

@@ -1,12 +1,18 @@
 from pathlib import Path
-from manim_voiceover.helper import msg_box, prompt_ask_missing_extras, remove_bookmarks
 
-from manim_voiceover.services.base import SpeechService
 from manim import logger
+
+from syh_manim_voiceover.helper import (
+    msg_box,
+    prompt_ask_missing_extras,
+    remove_bookmarks,
+)
+from syh_manim_voiceover.services.base import SpeechService
 
 try:
     import pyaudio
-    from manim_voiceover.services.recorder.utility import Recorder
+
+    from syh_manim_voiceover.services.recorder.utility import Recorder
 
     # Workaround to get this included in the docs
     DEFAULT_FORMAT = pyaudio.paInt16
