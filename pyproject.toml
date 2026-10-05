@@ -1,7 +1,7 @@
 [project]
-name = "manim-voiceover"
-version = "0.3.7"
-description = "Manim plugin for all things voiceover"
+name = "syh-manim-voiceover"
+version = "0.4.0"
+description = "Manim plugin for all things voiceover, modified by SYH"
 authors = [
     { name = "The Manim Community Developers", email = "contact@manim.community" },
 ]
@@ -116,11 +116,11 @@ dev = [
 default-groups = "all"
 
 [tool.uv.build-backend]
-module-name = ["manim_voiceover"]
+module-name = ["syh_manim_voiceover"]
 module-root = ""
 
 [build-system]
-requires = ["uv_build>=0.11.15,<0.12.0"]
+requires = ["uv_build>=0.11.15,<0.13.0"]
 build-backend = "uv_build"
 
 
